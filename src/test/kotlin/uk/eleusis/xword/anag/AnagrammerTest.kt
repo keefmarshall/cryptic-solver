@@ -1,0 +1,67 @@
+package uk.eleusis.xword.anag
+
+import org.junit.Assert.*
+import org.junit.BeforeClass
+import org.junit.Test
+
+class AnagrammerTest {
+
+
+    companion object {
+
+        private val TESTFILE = "/Users/keith/Downloads/UKACD17/sorted/UKACD18plus-keith.txt"
+
+        lateinit var anagrammer: Anagrammer
+
+        @JvmStatic
+        @BeforeClass
+        fun setUp() {
+            val wf = WordFile(TESTFILE)
+            wf.loadFile()
+
+            anagrammer = Anagrammer(wf)
+        }
+    }
+
+    @Test
+    fun findPartial() {
+
+        time("Find partials") {
+            val allMatches = anagrammer.findPartial("Pan's")
+            assertEquals(10017, allMatches.size)
+            assertTrue(allMatches.contains("Caspian"))
+        }
+
+        time("Find partials of max length") {
+            val matches8 = anagrammer.findPartialWithMaxLength("Pan's", 8)
+            assertEquals(917, matches8.size)
+            assertTrue(matches8.contains("Caspian"))
+        }
+
+        time("Find partials of exact length") {
+            val matches8 = anagrammer.findPartialWithExactLength("Pan's", 8)
+            assertEquals(545, matches8.size)
+            assertTrue(matches8.contains("aspiring"))
+        }
+
+    }
+
+
+    @Test
+    fun findAnagrams() {
+        time("Anagram lookup") {
+            val anags = anagrammer.findAnagrams("Pan's Dream")
+            assertEquals(1, anags.size)
+            assertEquals("ampersand", anags.first())
+        }
+
+    }
+
+    @Test
+    fun containsPartial() {
+        time("contains partial") {
+            val con = anagrammer.containsPartial("Pan's", "ampersand")
+            assertTrue(con)
+        }
+    }
+}
