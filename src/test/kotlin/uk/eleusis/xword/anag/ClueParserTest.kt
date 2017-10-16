@@ -10,7 +10,11 @@ class ClueParserTest {
         println()
         println(ClueParser.parseClue("... and Pan's Dream, perhaps (9)"))
         println()
-        println(ClueParser.parseClue("Promise to welcome terribly wary dramatist (10)"))
+
+        val clue = ClueParser.parseClue("Promise to welcome terribly wary dramatist (10)")
+        clue.knownLetters[5] = 'r'
+        clue.knownLetters[9] = 't'
+        println(clue)
     }
 
 }

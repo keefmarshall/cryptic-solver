@@ -6,6 +6,9 @@ data class Clue(val phrase: String,
                 val wordLengths: List<Int>,
                 val separators: List<String>) {
 
-    val knownLetters: List<String> = mutableListOf<String>()
-}
+    val knownLetters = Array<Char?>(totalLength, { _ -> null })
 
+    fun hasKnownLetters(): Boolean {
+        return knownLetters.filterNot { it == null }.isNotEmpty()
+    }
+}

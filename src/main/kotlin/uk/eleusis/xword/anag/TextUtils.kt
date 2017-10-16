@@ -39,7 +39,7 @@ fun String.toSortedBag(): SortedBag<Char> = TreeBag(this.toList())
 
 fun subsetOfExactLength(strings: List<String>,
                         target: Int,
-                        partial: List<String> = mutableListOf(),
+                        partial: List<String> = emptyList(),
                         partialSum: Int = 0): List<List<String>> = buildSequence {
 
         if (partialSum == target)
@@ -54,3 +54,42 @@ fun subsetOfExactLength(strings: List<String>,
         }
 
     }.toList()
+
+
+fun subsetOfMaxLength(strings: List<String>,
+                        target: Int,
+                        partial: List<String> = emptyList(),
+                        partialSum: Int = 0): List<List<String>> = buildSequence {
+
+    if (partialSum in 1..target)
+        yield(partial)
+    if (partialSum >= target)
+        return@buildSequence
+
+    strings.forEachIndexed { i, cur ->
+        val remaining = strings.drop(i + 1)
+        val result = subsetOfMaxLength(remaining, target, partial + cur, partialSum + cur.length)
+        yieldAll(result)
+    }
+
+}.toList()
+
+/**
+ * Generate a sequence of strings with all possible combinations from the supplied lists
+ * e.g. if supplied [[two, three],[apples, pears]] would produce:
+ * [twoapples, twopears, threeapples, threepears]
+ */
+fun comboSequence(wordLists: List<List<String>>, current: List<String> = emptyList()): Sequence<List<String>> =
+        buildSequence {
+            if (wordLists.isEmpty()) {
+                yield(current)
+            }
+            else {
+                val nextList = wordLists.first()
+                val remainder = wordLists.drop(1)
+                nextList.forEach {
+                    val result = comboSequence(remainder, current + it)
+                    yieldAll(result)
+                }
+            }
+        }

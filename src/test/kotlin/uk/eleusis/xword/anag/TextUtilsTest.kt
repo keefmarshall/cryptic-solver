@@ -36,4 +36,36 @@ class TextUtilsTest {
         result2.forEach(::println)
 
     }
+
+    @Test
+    fun comboSequence2() {
+        val wordLists = listOf(listOf("two", "three"), listOf("apples", "pears"))
+        val combos = comboSequence(wordLists).toHashSet()
+
+        println(combos)
+
+        assertEquals(4, combos.size)
+        assertTrue(combos.contains(listOf("two", "apples")))
+        assertTrue(combos.contains(listOf("three", "apples")))
+        assertTrue(combos.contains(listOf("two", "pears")))
+        assertTrue(combos.contains(listOf("three", "pears")))
+    }
+
+    @Test
+    fun comboSequence3() {
+        val wordLists = listOf(listOf("two", "three"), listOf("apples", "pears"), listOf("fresh", "frozen"))
+        val combos = comboSequence(wordLists).toHashSet()
+
+        println(combos)
+
+        assertEquals(8, combos.size)
+        assertTrue(combos.contains(listOf("two", "apples", "fresh")))
+        assertTrue(combos.contains(listOf("three", "apples", "fresh")))
+        assertTrue(combos.contains(listOf("two", "pears", "fresh")))
+        assertTrue(combos.contains(listOf("three", "pears", "fresh")))
+        assertTrue(combos.contains(listOf("two" ,"apples", "frozen")))
+        assertTrue(combos.contains(listOf("three" ,"apples", "frozen")))
+        assertTrue(combos.contains(listOf("two", "pears", "frozen")))
+        assertTrue(combos.contains(listOf("three", "pears", "frozen")))
+    }
 }

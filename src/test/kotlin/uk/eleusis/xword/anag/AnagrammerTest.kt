@@ -55,6 +55,7 @@ class AnagrammerTest {
             assertEquals("ampersand", anags.first())
         }
 
+        println(anagrammer.findAnagrams("ten years"))
     }
 
     @Test
@@ -64,4 +65,14 @@ class AnagrammerTest {
             assertTrue(con)
         }
     }
+
+    @Test
+    fun findPhraseAnagramPartials() {
+        time("phrase anagram partials") {
+            val result = anagrammer.findPhraseAnagramPartials("peace", listOf(3, 4))
+            assertEquals(listOf("ABC", "beep"), result.first())
+        }
+    }
+
+
 }
