@@ -22,9 +22,9 @@ class WordFileTest {
             wf.loadFile(TESTFILE2)
         }
 
+        assertTrue(wf.getWordSet().contains("habitué"))
+        assertTrue(wf.getSanitisedWordMap().keySet().contains("habitue"))
     }
-
-
 
 }
 

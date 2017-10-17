@@ -6,10 +6,15 @@ import org.apache.commons.collections4.bag.HashBag
 import org.apache.commons.collections4.bag.TreeBag
 import org.apache.commons.lang3.NotImplementedException
 import org.apache.commons.lang3.StringUtils
+import org.apache.logging.log4j.LogManager
+import org.springframework.stereotype.Service
 
+@Service
 class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
 
     data class Solution(val words: List<String>, val clue: Clue)
+
+    private val logger = LogManager.getLogger(Solver::class.java.name)
 
     fun solve(input: String): Solution = solve(ClueParser.parseClue(input))
 
@@ -27,11 +32,23 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
         // TODO: other solvey things
 
 
-        val results = resultBag
+        val knownFilter = knownLettersFilter(clue.knownLetters)
+
+        var results = resultBag
                 .uniqueSet()
-                .filter(knownLettersFilter(clue.knownLetters))
+                .filter(knownFilter)
                 .toList()
                 .sortedByDescending { s -> resultBag.getCount(s) }
+
+        if (results.isEmpty()) {
+            logger.info("results empty, returning all words that match known letters ${clue.knownLetters}")
+            val sanitisedWordMap = wf.getSanitisedWordMap()
+            results = sanitisedWordMap
+                    .keySet()
+                    .filter { it.length == clue.totalLength }
+                    .filter(knownFilter)
+                    .map { sanitisedWordMap[it].first() }
+        }
 
         return Solution(results, clue)
     }
@@ -79,13 +96,18 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
 
 fun matchKnownLetters(word: String, known: Array<Char?>): Boolean {
     var match = true
-    (0 until known.size).forEach {
-        if (known[it] != null) {
-            if (known[it] != word[it]) {
-                match = false
+    if (word.isNotEmpty() && known.isNotEmpty()) {
+        (0 until known.size).forEach {
+            if (known[it] != null) {
+                if (known[it] != word[it]) {
+                    match = false
+                    return@forEach
+                }
             }
         }
     }
+    else { match = false }
+
     return match
 }
 

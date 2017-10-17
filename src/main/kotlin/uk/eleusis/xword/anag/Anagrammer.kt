@@ -4,8 +4,10 @@ import org.apache.commons.collections4.Bag
 import org.apache.commons.collections4.SetValuedMap
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap
 import org.apache.commons.lang3.StringUtils
+import org.springframework.stereotype.Service
 import kotlin.coroutines.experimental.buildSequence
 
+@Service
 class Anagrammer(val wf: WordFile) {
 
     private val anagramMap = wf.getAnagramMap()
