@@ -9,6 +9,7 @@ import uk.eleusis.xword.anag.ClueParser
 import uk.eleusis.xword.anag.Solver
 
 @RestController
+@RequestMapping("/api")
 class SolutionController(@Autowired val solver: Solver) {
 
     private val logger = LogManager.getLogger(SolutionController::class.java.name)
@@ -31,4 +32,7 @@ class SolutionController(@Autowired val solver: Solver) {
 
         return solver.solve(parsedClue)
     }
+
+    @RequestMapping("/parse")
+    fun parseClue(@RequestParam("clue") clue: String) = ClueParser.parseClue(clue)
 }
