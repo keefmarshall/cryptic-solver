@@ -78,10 +78,16 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
         // into one big list. Find all the combos that match the total clue length.
         // Very simplistic, lots of issues with this approach, just seeing if it
         // ever works.
-        val biglist = clue.phraseWords.flatMap(wn::allSimilarWords)
+        val biglist = clue.phraseWords.flatMap(wn::allSimilarWords).map(::sanitisePhrase)
         println("Got total simplistic match words: ${biglist.size}")
 
-        val exacts = biglist.filter { it.length == clue.totalLength }
+        val exacts = biglist
+          .filter { it.length == clue.totalLength }
+          .map {
+            val readable = wf.getSanitisedWordMap()[it]
+            if (readable == null || readable.isEmpty()) it else readable.first()
+          }
+
         println("Got total exact length simplistic match words: ${exacts.size}")
 
         return if (tryCombos) {

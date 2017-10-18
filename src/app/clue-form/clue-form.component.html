@@ -3,8 +3,10 @@
 
   <div id="clue-input">
     <label for="clue-string">Clue: </label>
-    <input type="text" id="clue-string" [(ngModel)]="clueString" size="80"/>
+    <input type="text" id="clue-string" [(ngModel)]="clueString" size="80" 
+      placeholder="Full clue including length, e.g. '...and Pan's Dream, perhaps (9)'"/>
     <button (click)="parse()">Parse</button>
+    <button (click)="clear()">Clear</button>
   </div>
 
   <div *ngIf="clue">

@@ -46,7 +46,7 @@ module.exports = "<!--<h1>-->\n  <!--{{title}}-->\n<!--</h1>-->\n\n<clue-form></
 /***/ 140:
 /***/ (function(module, exports) {
 
-module.exports = "<fieldset>\n  <legend>Solver</legend>\n\n  <div id=\"clue-input\">\n    <label for=\"clue-string\">Clue: </label>\n    <input type=\"text\" id=\"clue-string\" [(ngModel)]=\"clueString\" size=\"80\"/>\n    <button (click)=\"parse()\">Parse</button>\n  </div>\n\n  <div *ngIf=\"clue\">\n    <span>Letters: </span>\n\n    <span *ngFor=\"let l of clue.knownLetters, let i = index, trackBy:trackByIndex\">\n      <input [(ngModel)]=\"clue.knownLetters[i]\" type=\"text\" size=\"1\"/>\n    </span>\n    <!--<span *ngFor=\"let w of clue.wordLengths, let first = first;\">-->\n      <!--<span *ngIf=\"!first\">{{ clue.separators[i - 1]</span>-->\n\n      <!--<span *ngFor=\"let n of w\">-->\n        <!--<input type=\"text\" size=\"1\" [(ngModel)]=\"clue.knownLetters(\"/>-->\n      <!--</span>-->\n    <!--</span>-->\n    <button (click)=\"solve()\">Solve</button>\n  </div>\n\n</fieldset>\n\n<fieldset *ngIf=\"clue\">\n  <legend>Clue</legend>\n  {{ JSON.stringify(clue) }}\n</fieldset>\n\n<fieldset *ngIf=\"solution\">\n  <legend>Solution</legend>\n  {{ JSON.stringify(solution) }}\n</fieldset>\n\n\n"
+module.exports = "<fieldset>\n  <legend>Solver</legend>\n\n  <div id=\"clue-input\">\n    <label for=\"clue-string\">Clue: </label>\n    <input type=\"text\" id=\"clue-string\" [(ngModel)]=\"clueString\" size=\"80\" \n      placeholder=\"Full clue including length, e.g. '...and Pan's Dream, perhaps (9)'\"/>\n    <button (click)=\"parse()\">Parse</button>\n    <button (click)=\"clear()\">Clear</button>\n  </div>\n\n  <div *ngIf=\"clue\">\n    <span>Letters: </span>\n\n    <span *ngFor=\"let l of clue.knownLetters, let i = index, trackBy:trackByIndex\">\n      <input [(ngModel)]=\"clue.knownLetters[i]\" type=\"text\" size=\"1\"/>\n    </span>\n    <!--<span *ngFor=\"let w of clue.wordLengths, let first = first;\">-->\n      <!--<span *ngIf=\"!first\">{{ clue.separators[i - 1]</span>-->\n\n      <!--<span *ngFor=\"let n of w\">-->\n        <!--<input type=\"text\" size=\"1\" [(ngModel)]=\"clue.knownLetters(\"/>-->\n      <!--</span>-->\n    <!--</span>-->\n    <button (click)=\"solve()\">Solve</button>\n  </div>\n\n</fieldset>\n\n<fieldset *ngIf=\"clue\">\n  <legend>Clue</legend>\n  {{ JSON.stringify(clue) }}\n</fieldset>\n\n<fieldset *ngIf=\"solution\">\n  <legend>Solution</legend>\n  {{ JSON.stringify(solution) }}\n</fieldset>\n\n\n"
 
 /***/ }),
 
@@ -207,6 +207,10 @@ var ClueFormComponent = (function () {
             .subscribe(function (json) {
             _this.clue = json;
         });
+    };
+    ClueFormComponent.prototype.clear = function () {
+        this.clue = null;
+        this.solution = null;
     };
     ClueFormComponent.prototype.solve = function () {
         var _this = this;

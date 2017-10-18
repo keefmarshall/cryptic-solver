@@ -29,6 +29,11 @@ export class ClueFormComponent implements OnInit {
       });
   }
 
+  clear() {
+    this.clue = null;
+    this.solution = null;
+  }
+
   solve() {
     const known = this.clue.knownLetters
       .map(x => x == null ? '?' : x)
