@@ -1,0 +1,38 @@
+<fieldset>
+  <legend>Solver</legend>
+
+  <div id="clue-input">
+    <label for="clue-string">Clue: </label>
+    <input type="text" id="clue-string" [(ngModel)]="clueString" size="80"/>
+    <button (click)="parse()">Parse</button>
+  </div>
+
+  <div *ngIf="clue">
+    <span>Letters: </span>
+
+    <span *ngFor="let l of clue.knownLetters, let i = index, trackBy:trackByIndex">
+      <input [(ngModel)]="clue.knownLetters[i]" type="text" size="1"/>
+    </span>
+    <!--<span *ngFor="let w of clue.wordLengths, let first = first;">-->
+      <!--<span *ngIf="!first">{{ clue.separators[i - 1]</span>-->
+
+      <!--<span *ngFor="let n of w">-->
+        <!--<input type="text" size="1" [(ngModel)]="clue.knownLetters("/>-->
+      <!--</span>-->
+    <!--</span>-->
+    <button (click)="solve()">Solve</button>
+  </div>
+
+</fieldset>
+
+<fieldset *ngIf="clue">
+  <legend>Clue</legend>
+  {{ JSON.stringify(clue) }}
+</fieldset>
+
+<fieldset *ngIf="solution">
+  <legend>Solution</legend>
+  {{ JSON.stringify(solution) }}
+</fieldset>
+
+
