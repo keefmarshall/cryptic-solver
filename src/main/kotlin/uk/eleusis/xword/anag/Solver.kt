@@ -103,9 +103,10 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
 fun matchKnownLetters(word: String, known: Array<Char?>): Boolean {
     var match = true
     if (word.isNotEmpty() && known.isNotEmpty()) {
+        val sword = sanitisePhrase(word)
         (0 until known.size).forEach {
             if (known[it] != null) {
-                if (known[it] != word[it]) {
+                if (known[it] != sword[it]) {
                     match = false
                     return@forEach
                 }

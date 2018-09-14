@@ -58,7 +58,19 @@ class AnagrammerTest {
         println(anagrammer.findAnagrams("ten years"))
     }
 
-    @Test
+  @Test
+  fun findAnagrams2() {
+    time("Anagram lookup 2") {
+      val anags = anagrammer.findAnagrams("Cheam, its deed")
+      assertEquals(1, anags.size)
+      assertEquals("semi-detached", anags.first())
+    }
+
+    println(anagrammer.findAnagrams("Cheam, its deed"))
+  }
+
+
+  @Test
     fun containsPartial() {
         time("contains partial") {
             val con = anagrammer.containsPartial("Pan's", "ampersand")

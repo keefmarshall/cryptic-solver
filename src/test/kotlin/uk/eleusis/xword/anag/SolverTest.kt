@@ -1,5 +1,7 @@
 package uk.eleusis.xword.anag
 
+import org.apache.commons.collections4.Bag
+import org.apache.commons.collections4.bag.HashBag
 import org.junit.Assert.*
 import org.junit.BeforeClass
 import org.junit.Test
@@ -100,11 +102,35 @@ class SolverTest() {
         println(result.words)
     }
 
+    //Sort of house in Cheam, its deed is mislaid (4-8)
+    // semi-detached
+    // - seems to be some issue with the hyphenated part
+    @Test
+    fun solveAnother6() {
+      val clue = ClueParser.parseClue("Sort of house in Cheam, its deed is mislaid (4-8)")
+      clue.knownLetters[0] = 's'
+      clue.knownLetters[4] = 'd'
+
+      val result = solver.solve(clue)
+
+      println(result.words.size)
+      println(result.words)
+      assertTrue(result.words.contains("semi-detached"))
+    }
+
     @Test
     fun tryFullAnagram() {
         val clue = ClueParser.parseClue("... and Pan's Dream, perhaps (9)")
         val possibles = solver.tryFullAnagram(clue)
         println(possibles)
+    }
+
+    @Test
+    fun tryFullAnagram2() {
+      val clue = ClueParser.parseClue("Sort of house in Cheam, its deed is mislaid (4-8)")
+      val possibles = solver.tryFullAnagram(clue)
+      println(possibles)
+      assertTrue(possibles.contains("semi-detached"))
     }
 
     @Test
@@ -114,6 +140,39 @@ class SolverTest() {
         possibles.forEach {
             println("$it: ${it.javaClass.name}")
         }
+    }
+
+    @Test
+    fun trySimplisticWNMatch2() {
+      val clue = ClueParser.parseClue("Sort of house in Cheam, its deed is mislaid (4-8)")
+      val possibles = solver.trySimplisticWNMatch(clue, false)
+      possibles.forEach {
+        println("$it: ${it.javaClass.name}")
+      }
+    }
+
+    @Test
+    fun testForSemiDetachedBug() {
+      val clue = ClueParser.parseClue("Sort of house in Cheam, its deed is mislaid (4-8)")
+      val apossibles = solver.tryFullAnagram(clue)
+      val spossibles = solver.trySimplisticWNMatch(clue, false)
+
+      val resultBag: Bag<String> = HashBag<String>()
+      resultBag.addAll(apossibles)
+      assertTrue(resultBag.contains("semi-detached"))
+
+      resultBag.addAll(spossibles)
+      assertTrue(resultBag.contains("semi-detached"))
+
+      val knownFilter = knownLettersFilter(clue.knownLetters)
+
+      var results = resultBag
+        .uniqueSet()
+        .filter(knownFilter)
+        .toList()
+        .sortedByDescending { s -> resultBag.getCount(s) }
+
+      assertTrue(results.contains("semi-detached"))
     }
 
     @Test
@@ -140,4 +199,24 @@ class SolverTest() {
         assertTrue(matchKnownLetters("habitue", known))
     }
 
+    @Test
+    fun matchKnownLetters3() {
+        val known = Array<Char?>(12, { _ -> null})
+        known[0] = 's'
+        known[5] = 'e'
+
+        assertTrue(matchKnownLetters("semi-detached", known))
+        assertFalse(matchKnownLetters("secretballot", known))
+    }
+
+    @Test
+    fun knownLettersFilter() {
+      val known = Array<Char?>(12, { _ -> null})
+      known[0] = 's'
+      known[5] = 'e'
+
+      val filter = knownLettersFilter(known)
+      assertTrue(filter("semi-detached"))
+      assertFalse(filter("secretballot"))
+    }
 }
