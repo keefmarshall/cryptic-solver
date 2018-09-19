@@ -12,8 +12,13 @@
   <div *ngIf="clue">
     <span>Letters: </span>
 
-    <span *ngFor="let l of clue.knownLetters, let i = index, trackBy:trackByIndex">
-      <input [(ngModel)]="clue.knownLetters[i]" type="text" size="1"/>
+    <span >
+      <input
+        *ngFor="let l of clue.knownLetters, let i = index, trackBy: trackByIndex"
+        [(ngModel)]="clue.knownLetters[i]"
+        type="text" size="1" maxlength="1"
+        (keyup)="moveToNext($event)"
+      />
     </span>
     <!--<span *ngFor="let w of clue.wordLengths, let first = first;">-->
       <!--<span *ngIf="!first">{{ clue.separators[i - 1]</span>-->

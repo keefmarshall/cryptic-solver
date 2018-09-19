@@ -30,13 +30,14 @@ export class ClueFormComponent implements OnInit {
   }
 
   clear() {
+    this.clueString = null;
     this.clue = null;
     this.solution = null;
   }
 
   solve() {
     const known = this.clue.knownLetters
-      .map(x => x == null ? '?' : x)
+      .map(x => (x == null || x == " " || x == "") ? '?' : x)
       .join('');
 
     this.http.get('/api/solve?clue=' + this.clueString + '&known=' + known)
@@ -49,5 +50,12 @@ export class ClueFormComponent implements OnInit {
   // https://github.com/angular/angular/issues/10423
   trackByIndex(index: number, value: number) {
     return index;
+  }
+
+  moveToNext($event) {
+    let nextInput = $event.srcElement.nextElementSibling;
+    if ($event.target.value.length > 0 && nextInput != null) {
+      nextInput.focus()
+    }
   }
 }
