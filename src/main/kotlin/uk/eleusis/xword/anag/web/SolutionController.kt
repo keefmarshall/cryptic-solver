@@ -5,12 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import uk.eleusis.xword.anag.Anagrammer
 import uk.eleusis.xword.anag.ClueParser
 import uk.eleusis.xword.anag.Solver
 
 @RestController
 @RequestMapping("/api")
-class SolutionController(@Autowired val solver: Solver) {
+class SolutionController(
+  val solver: Solver,
+  val anag: Anagrammer
+) {
 
     private val logger = LogManager.getLogger(SolutionController::class.java.name)
 
@@ -22,17 +26,35 @@ class SolutionController(@Autowired val solver: Solver) {
         logger.info("Got known: $knownString")
         val parsedClue = ClueParser.parseClue(clue)
 
-        knownString.toCharArray()
-                .mapIndexed { index, c ->
-                    if (c != '?' && c != ' ') {
-                        logger.info("Got $index as $c")
-                        parsedClue.knownLetters[index] = c
-                    }
-                }
+        knownStringToLetters(knownString).mapIndexed { index, c -> parsedClue.knownLetters[index] = c }
 
         return solver.solve(parsedClue)
     }
 
     @RequestMapping("/parse")
     fun parseClue(@RequestParam("clue") clue: String) = ClueParser.parseClue(clue)
+
+    @RequestMapping("/anagrams")
+    fun anagrams(@RequestParam("phrase") phrase: String) = anag.findAnagrams(phrase)
+
+    @RequestMapping("/knownLetterMatches")
+    fun knownLetterMatches(@RequestParam("known") knownString: String): Collection<String> {
+      val knownLetters = knownStringToLetters(knownString)
+      return solver.tryKnownLetterMatch(knownLetters, knownLetters.size)
+    }
+
+  ////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
+  private fun knownStringToLetters(knownString: String): Array<Char?> {
+    val knownLetters = Array<Char?>(knownString.length) { _ -> null }
+    knownString.toCharArray()
+        .mapIndexed { index, c ->
+          if (c != '?' && c != ' ') {
+            knownLetters[index] = c
+          }
+        }
+    return knownLetters
+  }
+
 }

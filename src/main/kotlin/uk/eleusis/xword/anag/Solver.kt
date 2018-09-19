@@ -51,11 +51,15 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
     }
 
     fun tryKnownLetterMatch(clue: Clue): List<String> {
-      val knownFilter = knownLettersFilter(clue.knownLetters)
+      return tryKnownLetterMatch(clue.knownLetters, clue.totalLength)
+    }
+
+    fun tryKnownLetterMatch(knownLetters: Array<Char?>, length: Int): List<String> {
+      val knownFilter = knownLettersFilter(knownLetters)
       val sanitisedWordMap = wf.getSanitisedWordMap()
       return sanitisedWordMap
         .keySet()
-        .filter { it.length == clue.totalLength }
+        .filter { it.length == length }
         .filter(knownFilter)
         .map { sanitisedWordMap[it].first() }
     }
