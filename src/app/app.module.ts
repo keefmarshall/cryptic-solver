@@ -5,11 +5,13 @@ import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { ClueFormComponent } from './clue-form/clue-form.component';
+import { WordListComponent } from './word-list/word-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ClueFormComponent
+    ClueFormComponent,
+    WordListComponent
   ],
   imports: [
     BrowserModule,

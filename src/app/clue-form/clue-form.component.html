@@ -32,14 +32,15 @@
 
 </fieldset>
 
-<fieldset *ngIf="clue">
-  <legend>Clue</legend>
-  {{ JSON.stringify(clue) }}
-</fieldset>
+<!--<fieldset *ngIf="clue">-->
+  <!--<legend>Clue</legend>-->
+  <!--{{ JSON.stringify(clue) }}-->
+<!--</fieldset>-->
 
 <fieldset *ngIf="solution">
   <legend>Solution</legend>
-  {{ JSON.stringify(solution) }}
+  <!--{{ JSON.stringify(solution) }}-->
+  <app-word-list [items]="solution['words']"></app-word-list>
 </fieldset>
 
 
