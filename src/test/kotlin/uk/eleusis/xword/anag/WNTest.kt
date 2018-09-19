@@ -24,5 +24,11 @@ class WNTest {
         val result = wn.allSimilarWords("mead")
         println(result.filter { it.length <= 6 })
         println(result.size)
+
+        val result2 = wn.allSimilarWords("acclamation")
+        println(result2)
+        val result3 = wn.allSimilarWords("applause")
+        println(result3)
     }
+
 }

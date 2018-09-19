@@ -32,25 +32,32 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
         // TODO: other solvey things
 
 
-        val knownFilter = knownLettersFilter(clue.knownLetters)
+        val knownLetterResults = tryKnownLetterMatch(clue)
+        resultBag.addAll(tryPartialAnagram(clue, knownLetterResults))
 
+        val knownFilter = knownLettersFilter(clue.knownLetters)
         var results = resultBag
                 .uniqueSet()
                 .filter(knownFilter)
                 .toList()
                 .sortedByDescending { s -> resultBag.getCount(s) }
 
-        if (results.isEmpty()) {
-            logger.info("results empty, returning all words that match known letters ${clue.knownLetters}")
-            val sanitisedWordMap = wf.getSanitisedWordMap()
-            results = sanitisedWordMap
-                    .keySet()
-                    .filter { it.length == clue.totalLength }
-                    .filter(knownFilter)
-                    .map { sanitisedWordMap[it].first() }
+        if (results.isEmpty()) { // || results.size < 3) {
+            logger.info("results empty/small, returning all words that match known letters ${clue.knownLetters}")
+            results = results.plus(knownLetterResults)
         }
 
         return Solution(results, clue)
+    }
+
+    fun tryKnownLetterMatch(clue: Clue): List<String> {
+      val knownFilter = knownLettersFilter(clue.knownLetters)
+      val sanitisedWordMap = wf.getSanitisedWordMap()
+      return sanitisedWordMap
+        .keySet()
+        .filter { it.length == clue.totalLength }
+        .filter(knownFilter)
+        .map { sanitisedWordMap[it].first() }
     }
 
     // This works if we have the exact single word or phrase in the dictionary,
@@ -68,9 +75,16 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
                 .toList()
     }
 
-    fun tryPartialAnagram(clue: Clue): List<String> {
-        // TODO: implement this!
-        throw NotImplementedException("tryPartialAnagram not yet implemented")
+    fun tryPartialAnagram(clue: Clue, words: List<String>? = null): List<String> {
+        val workingSet = words ?: tryKnownLetterMatch(clue)
+
+        return workingSet.filter { matchPartialAnagrams(clue, it) }
+    }
+
+    fun matchPartialAnagrams(clue: Clue, word: String): Boolean {
+      return clue.phraseWords
+        .filter { it.length > 3 } // otherwise we'll get too many
+        .any { anag.containsPartial(it, word) }
     }
 
     fun trySimplisticWNMatch(clue: Clue, tryCombos: Boolean): List<String> {
@@ -97,7 +111,6 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
         }
         else { exacts }
     }
-
 }
 
 fun matchKnownLetters(word: String, known: Array<Char?>): Boolean {
@@ -120,3 +133,4 @@ fun matchKnownLetters(word: String, known: Array<Char?>): Boolean {
 
 fun knownLettersFilter(known: Array<Char?>): (String) -> Boolean =
         { word: String -> matchKnownLetters(word, known) }
+

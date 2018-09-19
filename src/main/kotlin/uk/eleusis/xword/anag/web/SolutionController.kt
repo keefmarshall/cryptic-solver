@@ -24,7 +24,7 @@ class SolutionController(@Autowired val solver: Solver) {
 
         knownString.toCharArray()
                 .mapIndexed { index, c ->
-                    if (c != '?') {
+                    if (c != '?' && c != ' ') {
                         logger.info("Got $index as $c")
                         parsedClue.knownLetters[index] = c
                     }

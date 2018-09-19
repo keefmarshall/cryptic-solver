@@ -118,6 +118,20 @@ class SolverTest() {
       assertTrue(result.words.contains("semi-detached"))
     }
 
+    // Acclamation of unusual papal custom (8) - Applause
+    @Test
+    fun solveAnother7() {
+      val clue = ClueParser.parseClue("Acclamation of unusual papal custom (8)")
+      clue.knownLetters[3] = 'l'
+
+      val result = time("Solve applause") {
+        solver.solve(clue)
+      }
+
+      assertTrue(result.words.contains("applause"))
+    }
+
+
     @Test
     fun tryFullAnagram() {
         val clue = ClueParser.parseClue("... and Pan's Dream, perhaps (9)")
@@ -131,6 +145,16 @@ class SolverTest() {
       val possibles = solver.tryFullAnagram(clue)
       println(possibles)
       assertTrue(possibles.contains("semi-detached"))
+    }
+
+    @Test
+    fun tryPartialAnagram() {
+      val clue = ClueParser.parseClue("Acclamation of unusual papal custom (8)")
+      clue.knownLetters[3] = 'l'
+
+      val possibles = solver.tryPartialAnagram(clue)
+      println(possibles)
+      assertTrue(possibles.contains("applause"))
     }
 
     @Test
