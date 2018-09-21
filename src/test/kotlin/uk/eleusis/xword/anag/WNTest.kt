@@ -29,6 +29,9 @@ class WNTest {
         println(result2)
         val result3 = wn.allSimilarWords("applause")
         println(result3)
+
+//        val result4 = wn.allSimilarWords("cash")
+//        assertTrue(result4.contains("bread"))
     }
 
 }

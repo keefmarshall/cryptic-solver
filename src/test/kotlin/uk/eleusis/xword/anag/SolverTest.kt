@@ -21,10 +21,11 @@ class SolverTest() {
             wf.loadFile()
 
             val anagrammer = Anagrammer(wf)
+            val inc = Inclusioner(wf)
             val wn = WordNetWrapper()
             wn.init()
 
-            solver = Solver(wf, anagrammer, wn)
+            solver = Solver(wf, anagrammer, wn, inc)
         }
     }
 
