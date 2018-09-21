@@ -2,4 +2,21 @@
   <!--{{title}}-->
 <!--</h1>-->
 
-<clue-form></clue-form>
+<!--
+  Tabs from here
+  https://www.codementor.io/temidayoajisebutu/an-easy-way-to-create-tabs-using-ngswitch-in-angular-2-io3cowd0g
+  -->
+
+<div class="tab-buttons">
+  <span class="tab-button" [class.active]="currentTab == 'tab1'" (click)="currentTab ='tab1'">clue solver</span> |
+  <span class="tab-button" [class.active]="currentTab == 'tab2'" (click)="currentTab ='tab2'">anagrams</span> |
+</div>
+
+<div class="tabs" [ngSwitch]="currentTab">
+  <div class="tab" *ngSwitchCase="'tab1'">
+    <clue-form></clue-form>
+  </div>
+  <div class="tab" *ngSwitchCase="'tab2'">
+    <anagram-form></anagram-form>
+  </div>
+</div>

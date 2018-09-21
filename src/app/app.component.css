@@ -1,0 +1,7 @@
+.tab-buttons .active {
+  text-decoration: underline;
+}
+
+.tab-button {
+  cursor: pointer;
+}
