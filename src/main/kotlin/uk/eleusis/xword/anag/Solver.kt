@@ -10,7 +10,12 @@ import org.apache.logging.log4j.LogManager
 import org.springframework.stereotype.Service
 
 @Service
-class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
+class Solver(
+  val wf: WordFile,
+  val anag: Anagrammer,
+  val wn: WordNetWrapper,
+  val inc: Inclusioner
+) {
 
     data class Solution(val words: List<String>, val clue: Clue)
 
@@ -26,6 +31,7 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
 
         resultBag.addAll(tryFullAnagram(clue))
         resultBag.addAll(trySimplisticWNMatch(clue, false))
+        resultBag.addAll(tryInclusions(clue))
 //        if (clue.hasKnownLetters()) {
 //            resultBag.addAll(wf.getWordSet().filter(knownLettersFilter(clue.knownLetters)))
 //        }
@@ -115,6 +121,8 @@ class Solver(val wf: WordFile, val anag: Anagrammer, val wn: WordNetWrapper) {
         }
         else { exacts }
     }
+
+    fun tryInclusions(clue: Clue): List<String> = inc.findInclusions(clue)
 }
 
 fun matchKnownLetters(word: String, known: Array<Char?>): Boolean {
