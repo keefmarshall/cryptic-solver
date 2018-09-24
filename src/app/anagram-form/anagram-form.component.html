@@ -1,16 +1,23 @@
-<fieldset>
-  <legend>Anagrammer</legend>
+<form id="anagram-form">
+  <fieldset>
+    <legend>Anagrammer</legend>
 
-  <div id="anagram-input">
-    <label for="anagram-string">Word or Phrase: </label>
-    <input type="text" id="anagram-string" [(ngModel)]="anagramString" size="60"
-           placeholder="any word or phrase, with or without punctuation"/>
-    <button (click)="findAnagrams()">Find Anagrams</button>
-    <button (click)="clear()">Clear</button>
-  </div>
-</fieldset>
+    <div id="anagram-input">
+      <label for="anagram-string">Word or Phrase: </label>
+      <input type="text"
+             id="anagram-string"
+             name="anagram-string"
+             [(ngModel)]="anagramString"
+             size="60"
+             placeholder="any word or phrase, with or without punctuation"
+      />
+      <button type="submit" (click)="findAnagrams()">Find Anagrams</button>
+      <button (click)="clear()">Clear</button>
+    </div>
+  </fieldset>
 
-<fieldset *ngIf="anagrams">
-  <legend>Anagrams</legend>
-  <app-word-list [items]="anagrams"></app-word-list>
-</fieldset>
+  <fieldset *ngIf="anagrams">
+    <legend>Anagrams</legend>
+    <app-word-list [items]="anagrams"></app-word-list>
+  </fieldset>
+</form>

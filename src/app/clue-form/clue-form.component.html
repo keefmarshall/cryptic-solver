@@ -1,33 +1,43 @@
 <fieldset>
   <legend>Solver</legend>
 
-  <div id="clue-input">
-    <label for="clue-string">Clue: </label>
-    <input type="text" id="clue-string" [(ngModel)]="clueString" size="80" 
-      placeholder="Full clue including length, e.g. '...and Pan's Dream, perhaps (9)'"/>
-    <button (click)="parse()">Parse</button>
-    <button (click)="clear()">Clear</button>
-  </div>
+  <form id="clue-form">
+    <div id="clue-input">
+      <label for="clue-string">Clue: </label>
+      <input type="text"
+             name="clueString"
+             id="clue-string"
+             [(ngModel)]="clueString"
+             size="80"
+             placeholder="Full clue including length, e.g. '...and Pan's Dream, perhaps (9)'"
+      />
+      <button name="parse" type="submit" (click)="parse()">Parse</button>
+      <button (click)="clear()">Clear</button>
+    </div>
+  </form>
 
   <div *ngIf="clue">
-    <span>Letters: </span>
+    <form id="knownletters-form">
+      <span>Letters: </span>
 
-    <span >
-      <input
-        *ngFor="let l of clue.knownLetters, let i = index, trackBy: trackByIndex"
-        [(ngModel)]="clue.knownLetters[i]"
-        type="text" size="1" maxlength="1"
-        (keyup)="moveToNext($event)"
-      />
-    </span>
-    <!--<span *ngFor="let w of clue.wordLengths, let first = first;">-->
-      <!--<span *ngIf="!first">{{ clue.separators[i - 1]</span>-->
+      <span >
+        <input
+          *ngFor="let l of clue.knownLetters, let i = index, trackBy: trackByIndex"
+          [name]="'knownLetters-' + i"
+          [(ngModel)]="clue.knownLetters[i]"
+          type="text" size="1" maxlength="1"
+          (keyup)="moveToNext($event)"
+        />
+      </span>
+      <!--<span *ngFor="let w of clue.wordLengths, let first = first;">-->
+        <!--<span *ngIf="!first">{{ clue.separators[i - 1]</span>-->
 
-      <!--<span *ngFor="let n of w">-->
-        <!--<input type="text" size="1" [(ngModel)]="clue.knownLetters("/>-->
+        <!--<span *ngFor="let n of w">-->
+          <!--<input type="text" size="1" [(ngModel)]="clue.knownLetters("/>-->
+        <!--</span>-->
       <!--</span>-->
-    <!--</span>-->
-    <button (click)="solve()">Solve</button>
+      <button name="solve" type="submit" (click)="solve()">Solve</button>
+    </form>
   </div>
 
 </fieldset>
