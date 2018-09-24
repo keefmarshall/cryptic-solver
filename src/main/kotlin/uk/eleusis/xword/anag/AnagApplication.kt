@@ -10,13 +10,14 @@ import javax.annotation.PostConstruct
 class AnagApplication {
 
   @Autowired lateinit var wf: WordFile
-  @Value("\${word.file.extra}") var extraWords: String? = null
+  @Value("\${word.file.extra}")
+  lateinit var extraWords: String
 
   @PostConstruct
   fun init() {
-    if (extraWords != null) {
-      wf.loadFile(extraWords ?: "") // Kotlin bug? Can't infer that it's tested as not null..
-    }
+//    if (extraWords != null) {
+      wf.loadFile(extraWords) // ?: "") // Kotlin bug? Can't infer that it's tested as not null..
+//    }
   }
 }
 

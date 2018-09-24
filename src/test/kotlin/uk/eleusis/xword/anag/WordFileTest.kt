@@ -7,24 +7,42 @@ import org.junit.Assert.*
 
 class WordFileTest {
 
-    private val TESTFILE = "/Users/keith/Downloads/UKACD17/sorted/UKACD18plus-keith.txt"
-    private val TESTFILE2 = "/Users/keith/Downloads/UKACD17/keith-extra-words.txt"
+  private val TESTFILE = "/Users/keith/Downloads/UKACD17/sorted/UKACD18plus-keith.txt"
+  private val TESTFILE2 = "/Users/keith/Downloads/UKACD17/keith-extra-words.txt"
 
-    @Test
-    fun loadFile() {
-        val wf = WordFile(TESTFILE)
+  private val TESTFILE_RESOURCE = "/UKACD18plus-keith.txt"
+  private val TESTFILE2_RESOURCE = "/keith-extra-words.txt"
 
-        time("File load") {
-            wf.loadFile()
-        }
+  @Test
+  fun loadFileFromFilesystem() {
+      val wf = WordFile(TESTFILE, false)
 
-        time("Additional file load") {
-            wf.loadFile(TESTFILE2)
-        }
+      time("File load") {
+          wf.loadFile()
+      }
 
-        assertTrue(wf.getWordSet().contains("habitué"))
-        assertTrue(wf.getSanitisedWordMap().keySet().contains("habitue"))
+      time("Additional file load") {
+          wf.loadFile(TESTFILE2)
+      }
+
+      assertTrue(wf.getWordSet().contains("habitué"))
+      assertTrue(wf.getSanitisedWordMap().keySet().contains("habitue"))
+  }
+
+  @Test
+  fun loadFileFromClasspath() {
+    val wf = WordFile(TESTFILE_RESOURCE, true)
+
+    time("File load") {
+      wf.loadFile()
     }
 
+    time("Additional file load") {
+      wf.loadFile(TESTFILE2_RESOURCE)
+    }
+
+    assertTrue(wf.getWordSet().contains("habitué"))
+    assertTrue(wf.getSanitisedWordMap().keySet().contains("habitue"))
+  }
 }
 
