@@ -22,11 +22,11 @@
 
       <span >
         <input
-          *ngFor="let l of clue.knownLetters, let i = index, trackBy: trackByIndex"
+          *ngFor="let l of clue.knownLetters, let i = index, trackBy: letterHelperService.trackByIndex"
           [name]="'knownLetters-' + i"
           [(ngModel)]="clue.knownLetters[i]"
           type="text" size="1" maxlength="1"
-          (keyup)="moveToNext($event)"
+          (keyup)="letterHelperService.moveToNext($event)"
         />
       </span>
       <button name="solve" type="submit" (click)="solve()">Solve</button>

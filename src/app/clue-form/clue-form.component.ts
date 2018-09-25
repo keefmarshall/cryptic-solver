@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { Clue } from './clue';
 import 'rxjs/add/operator/map'
+import {LetterHelperService} from "../services/letter-helper.service";
 
 @Component({
   selector: 'clue-form',
@@ -13,12 +14,13 @@ export class ClueFormComponent implements OnInit {
   public clueString: string;
   public clue: Clue;
   public solution;
-  public JSON;
 
-  constructor(private http: Http) { }
+  constructor(
+    private http: Http,
+    public letterHelperService: LetterHelperService
+  ) { }
 
   ngOnInit() {
-    this.JSON = JSON;
   }
 
   parse() {
@@ -36,9 +38,7 @@ export class ClueFormComponent implements OnInit {
   }
 
   solve() {
-    const known = this.clue.knownLetters
-      .map(x => (x == null || x == " " || x == "") ? '?' : x)
-      .join('');
+    const known = this.letterHelperService.letterArrayToString(this.clue.knownLetters);
 
     this.http.get('/api/solve?clue=' + this.clueString + '&known=' + known)
       .map(res => res.json())
@@ -47,15 +47,4 @@ export class ClueFormComponent implements OnInit {
       });
   }
 
-  // https://github.com/angular/angular/issues/10423
-  trackByIndex(index: number, value: number) {
-    return index;
-  }
-
-  moveToNext($event) {
-    let nextInput = $event.srcElement.nextElementSibling;
-    if ($event.target.value.length > 0 && nextInput != null) {
-      nextInput.focus()
-    }
-  }
 }

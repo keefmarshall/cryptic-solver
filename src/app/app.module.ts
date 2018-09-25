@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ClueFormComponent } from './clue-form/clue-form.component';
 import { WordListComponent } from './word-list/word-list.component';
 import { AnagramFormComponent } from './anagram-form/anagram-form.component';
+import {LetterHelperService} from "./services/letter-helper.service";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,7 @@ import { AnagramFormComponent } from './anagram-form/anagram-form.component';
     FormsModule,
     HttpModule
   ],
-  providers: [],
+  providers: [LetterHelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
