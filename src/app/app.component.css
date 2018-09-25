@@ -1,3 +1,11 @@
+.tab-buttons {
+  box-sizing: border-box;
+  background: #e0ddd5;
+  color: #171e42;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
 .tab-buttons .active {
   text-decoration: underline;
 }

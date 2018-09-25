@@ -8,8 +8,8 @@
   -->
 
 <div class="tab-buttons">
-  <span class="tab-button" [class.active]="currentTab == 'tab1'" (click)="currentTab ='tab1'">clue solver</span> |
-  <span class="tab-button" [class.active]="currentTab == 'tab2'" (click)="currentTab ='tab2'">anagrams</span> |
+  <span class="tab-button" [class.active]="currentTab == 'tab1'" (click)="currentTab ='tab1'">clue solver</span>
+  | <span class="tab-button" [class.active]="currentTab == 'tab2'" (click)="currentTab ='tab2'">anagrams</span>
 </div>
 
 <div class="tabs" [ngSwitch]="currentTab">
