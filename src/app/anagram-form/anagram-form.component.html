@@ -15,9 +15,9 @@
       <button (click)="clear()">Clear</button>
     </div>
   </fieldset>
-
-  <fieldset *ngIf="anagrams">
-    <legend>Anagrams</legend>
-    <app-word-list [items]="anagrams"></app-word-list>
-  </fieldset>
 </form>
+
+<fieldset *ngIf="anagrams">
+  <legend>Anagrams</legend>
+  <app-word-list [items]="anagrams"></app-word-list>
+</fieldset>
