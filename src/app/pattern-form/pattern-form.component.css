@@ -1,0 +1,17 @@
+.number-switch input {
+  display: none;
+}
+
+.number-label {
+  display: inline-block;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 2em;
+  text-align: center;
+  vertical-align: center;
+  cursor: pointer;
+}
+
+.number-switch input:checked + label {
+  background-color: #e0ddd5;
+  color: #171e42;
+}

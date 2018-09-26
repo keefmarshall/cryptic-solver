@@ -8,13 +8,15 @@ import { ClueFormComponent } from './clue-form/clue-form.component';
 import { WordListComponent } from './word-list/word-list.component';
 import { AnagramFormComponent } from './anagram-form/anagram-form.component';
 import {LetterHelperService} from "./services/letter-helper.service";
+import { PatternFormComponent } from './pattern-form/pattern-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ClueFormComponent,
     WordListComponent,
-    AnagramFormComponent
+    AnagramFormComponent,
+    PatternFormComponent
   ],
   imports: [
     BrowserModule,

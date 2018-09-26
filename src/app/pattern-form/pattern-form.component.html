@@ -1,0 +1,55 @@
+<fieldset>
+  <legend>Pattern matcher</legend>
+
+  <form id="pattern-form">
+    <div id="length-input">
+      <span>Total length: </span>
+
+      <span *ngFor="let l of range(3,15)" class="number-switch">
+        <input
+               type="radio"
+               [name]="'totalLength-' + l"
+               id="totalLength-{{l}}"
+               [value]="l"
+               [(ngModel)]="totalLength"
+               class="number-button"
+               (change)="lengthChange()"
+        />
+        <label for="totalLength-{{l}}" class="number-label">{{ l }}</label>
+      </span>
+
+      <p>
+        <label for="lengthString">Or word lengths:</label>
+        <input
+          type="text"
+          name="lengthString"
+          id="lengthString"
+          [(ngModel)]="lengthString"
+          placeholder="e.g. 6,6"
+          (keyup)="updateLengthFromString()"
+          size="12"
+        />
+      </p>
+    </div>
+
+    <div class="known-letters">
+      <span>Known letters:</span>
+      <input *ngFor="let item of knownLetters, let i = index, trackBy: letterHelperService.trackByIndex"
+             type="text" size="1" maxlength="1"
+             [name]="'knownLetter-' + i"
+             (keyup)="letterHelperService.moveToNext($event)"
+             [(ngModel)]="knownLetters[i]"
+      />
+
+      <button name="match" type="submit" (click)="match()">Match</button>
+      <button (click)="clear()">Clear</button>
+    </div>
+
+  </form>
+
+</fieldset>
+
+<fieldset *ngIf="words">
+  <legend>Solution</legend>
+  <app-word-list [items]="words"></app-word-list>
+</fieldset>

@@ -18,9 +18,14 @@ export class LetterHelperService {
   }
 
   letterArrayToString(array: string[]) {
-    return array
-      .map(x => (x == null || x == " " || x == "") ? '?' : x)
-      .join('');
+    // NB: array.map ignores completely null/unset values!
+    // We have to use an old-style for.
+    const adjustedArray = Array<string>(array.length);
+    for (let i = 0; i < array.length; i++) {
+      const x = array[i];
+      adjustedArray[i] = (x == null || x == undefined || x == " " || x == "") ? '?' : x;
+    }
+    return adjustedArray.join('');
   }
 
 }
