@@ -11,8 +11,18 @@ export class LetterHelperService {
   }
 
   moveToNext($event) {
+    // console.log(`moveToNext: code = ${$event.code}`);
+
+    if ($event.code == 'ArrowLeft') { // move left
+      let prevInput = $event.srcElement.previousElementSibling;
+      if (prevInput) {
+        prevInput.focus();
+      }
+      return;
+    }
+
     let nextInput = $event.srcElement.nextElementSibling;
-    if ($event.target.value.length > 0 && nextInput != null) {
+    if ( ($event.target.value.length > 0 || $event.code == "ArrowRight") && nextInput != null) {
       nextInput.focus()
     }
   }
