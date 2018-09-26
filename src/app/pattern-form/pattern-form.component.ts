@@ -61,7 +61,7 @@ export class PatternFormComponent implements OnInit {
     this.http.get('/api/knownLetterMatches?known=' + known)
       .map(res => res.json())
       .subscribe( json => {
-        this.words = (json as Array<string>).sort();
+        this.words = (json as Array<string>).sort( (a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
       });
   }
 

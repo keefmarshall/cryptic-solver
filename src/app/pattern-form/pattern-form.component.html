@@ -1,5 +1,5 @@
 <fieldset>
-  <legend>Pattern matcher</legend>
+  <legend>Matcher</legend>
 
   <form id="pattern-form">
     <div id="length-input">
@@ -50,6 +50,6 @@
 </fieldset>
 
 <fieldset *ngIf="words">
-  <legend>Solution</legend>
+  <legend>Matches ({{ words.length }})</legend>
   <app-word-list [items]="words"></app-word-list>
 </fieldset>
