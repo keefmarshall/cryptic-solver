@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import uk.eleusis.xword.anag.Anagrammer
+import uk.eleusis.xword.anag.Clue
 import uk.eleusis.xword.anag.ClueParser
 import uk.eleusis.xword.anag.Solver
 
@@ -43,6 +44,11 @@ class SolutionController(
       return solver.tryKnownLetterMatch(knownLetters, knownLetters.size)
     }
 
+    @RequestMapping("/parseLengthString")
+    fun parseLengthString(@RequestParam("lengthString") lengthString: String): Clue {
+      val (totalLength, lengths, separators) = ClueParser.parseLengthString(lengthString)
+      return Clue("", emptyList(), totalLength, lengths, separators)
+    }
   ////////////////////////////////////////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////////////////
 

@@ -45,4 +45,23 @@ object ClueParser {
         throw IllegalArgumentException("Input $input is not a valid crossword clue")
     }
 
+  fun parseLengthString(lenStr: String): Triple<Int, List<Int>, List<String>> {
+    val lengths = mutableListOf<Int>()
+    val separators = mutableListOf<String>()
+
+    // could be e.g. '8', '4,6', '2-2,3' etc, might have spaces
+    val regex = Regex("(\\d+)([^\\d]*)")
+    val segMatches = regex.findAll(lenStr)
+
+    segMatches.forEach { match ->
+      lengths.add(match.groupValues[1].toInt())
+      if (match.groupValues.size > 2) {
+        separators.add(match.groupValues[2])
+      }
+    }
+
+    val totalLength = lengths.reduce { sum, element -> sum + element }
+
+    return Triple(totalLength, lengths, separators)
+  }
 }
