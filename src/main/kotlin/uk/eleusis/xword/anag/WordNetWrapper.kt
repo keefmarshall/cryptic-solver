@@ -15,20 +15,22 @@ class WordNetWrapper {
         dictionary = Dictionary.getDefaultResourceInstance()
     }
 
-    fun allSimilarWords(word: String): Collection<String> {
+    fun allSimilarWords(word: String): Sequence<String> {
         val wordSet = dictionary.lookupAllIndexWords(word)
 
-        return wordSet.indexWordArray
-                .flatMap { indexWord ->
-                    //indexWord.senses.map { PointerUtils.getDirectHyponyms(it) }
-                    indexWord.senses.flatMap { PointerUtils.getHyponymTree(it).toList() }
-                            .plus(indexWord.senses.flatMap { PointerUtils.getHypernymTree(it, 5).toList() })
-                            .plus(indexWord.senses.flatMap { PointerUtils.getSynonymTree(it, 5).toList() })
-                } // List<PointerTargetNodeList>
-                .flatMap { it.toList() }  // List<PointerTarget>
-                .flatMap { it.synset.words } // List<Word>
-                .map { it.lemma.toLowerCase() } // List<String>
-                .toSortedSet()
+        return wordSet.indexWordArray.asSequence()
+          .flatMap { indexWord ->
+            //indexWord.senses.map { PointerUtils.getDirectHyponyms(it) }
+            indexWord.senses.flatMap { PointerUtils.getHyponymTree(it).toList() }
+              .plus(indexWord.senses.flatMap { PointerUtils.getHypernymTree(it, 5).toList() })
+              .plus(indexWord.senses.flatMap { PointerUtils.getSynonymTree(it, 5).toList() })
+              .asSequence()
+          } // List<PointerTargetNodeList>
+          .flatMap { it.asSequence() }  // List<PointerTarget>
+          .flatMap { it.synset.words.asSequence() } // List<Word>
+          .map { it.lemma.toLowerCase() } // List<String>
+          .distinct() //.toSortedSet()
+          .sorted() // internally this converts toList() so do it last
     }
 
 }

@@ -37,7 +37,7 @@ fun String.toSortedBag(): SortedBag<Char> = TreeBag(this.toList())
     'generator pattern'
  */
 
-fun subsetOfExactLength(strings: List<String>,
+fun subsetOfExactLength(strings: Sequence<String>,
                         target: Int,
                         partial: List<String> = emptyList(),
                         partialSum: Int = 0): List<List<String>> = buildSequence {

@@ -25,7 +25,7 @@ class TextUtilsTest {
 
     @Test
     fun subsetOfExactLength() {
-        val strings = listOf("apples", "oranges", "pears", "pineapples", "grapes", "kiwis", "watermelons")
+        val strings = sequenceOf("apples", "oranges", "pears", "pineapples", "grapes", "kiwis", "watermelons")
 
         val result = subsetOfExactLength(strings, 11)
         result.forEach(::println)

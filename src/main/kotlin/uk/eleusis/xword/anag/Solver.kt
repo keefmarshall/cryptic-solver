@@ -45,6 +45,7 @@ class Solver(
         var results = resultBag
                 .uniqueSet()
                 .filter(knownFilter)
+                .filter { !clue.phraseWords.contains(it) } // don't include words from the clue!
                 .toList()
                 .sortedByDescending { s -> resultBag.getCount(s) }
 
@@ -74,7 +75,7 @@ class Solver(
     // but not if the solution is a combination of words we don't have as a phrase.
     fun tryFullAnagram(clue: Clue): List<String> {
         // find a set of whole words that match the total length
-        val combos = subsetOfExactLength(clue.phraseWords, clue.totalLength)
+        val combos = subsetOfExactLength(clue.phraseWords.asSequence(), clue.totalLength)
         if (combos.isEmpty()) // there's no obvious anagram
             return emptyList()
 
@@ -102,17 +103,34 @@ class Solver(
         // into one big list. Find all the combos that match the total clue length.
         // Very simplistic, lots of issues with this approach, just seeing if it
         // ever works.
-        val biglist = clue.phraseWords.flatMap(wn::allSimilarWords).map(::sanitisePhrase)
-        println("Got total simplistic match words: ${biglist.size}")
+//        val biglist = clue.phraseWords.flatMap(wn::allSimilarWords).map(::sanitisePhrase)
+////        println("Got total simplistic match words: ${biglist.size}")
+//
+//        val exacts = biglist
+//                .asSequence()
+//                .filter { it.length == clue.totalLength }
+//                .map {
+//                  val readable = wf.getSanitisedWordMap()[it]
+//                  if (readable == null || readable.isEmpty()) it else readable.first()
+//                }
+//                .toList()
 
-        val exacts = biglist
-          .filter { it.length == clue.totalLength }
-          .map {
-            val readable = wf.getSanitisedWordMap()[it]
-            if (readable == null || readable.isEmpty()) it else readable.first()
-          }
+      val biglist = clue.phraseWords
+        .asSequence()
+        .flatMap(wn::allSimilarWords)
+        .map(::sanitisePhrase)
 
-        println("Got total exact length simplistic match words: ${exacts.size}")
+//      println("Got total simplistic match words: ${biglist.size}")
+
+      val exacts = biglist
+        .filter { it.length == clue.totalLength }
+        .map {
+          val readable = wf.getSanitisedWordMap()[it]
+          if (readable == null || readable.isEmpty()) it else readable.first()
+        }
+        .toList()
+
+      println("Got total exact length simplistic match words: ${exacts.size}")
 
         return if (tryCombos) {
             val combos: List<List<String>> = subsetOfExactLength(biglist, clue.totalLength)

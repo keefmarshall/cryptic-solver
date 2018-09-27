@@ -21,14 +21,15 @@ class WNTest {
         val wn = WordNetWrapper()
         wn.init()
 
-        val result = wn.allSimilarWords("mead")
+        val result = wn.allSimilarWords("mead").toList()
+        assertTrue(result.contains("drink"))
         println(result.filter { it.length <= 6 })
         println(result.size)
 
         val result2 = wn.allSimilarWords("acclamation")
-        println(result2)
+        println(result2.toList())
         val result3 = wn.allSimilarWords("applause")
-        println(result3)
+        println(result3.toList())
 
 //        val result4 = wn.allSimilarWords("cash")
 //        assertTrue(result4.contains("bread"))
