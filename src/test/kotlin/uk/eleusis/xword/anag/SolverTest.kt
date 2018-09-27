@@ -4,13 +4,15 @@ import org.apache.commons.collections4.Bag
 import org.apache.commons.collections4.bag.HashBag
 import org.junit.Assert.*
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.junit.Test
 
-class SolverTest() {
+class SolverTest {
 
     companion object {
 
-        private val TESTFILE = "/Users/keith/Downloads/UKACD17/sorted/UKACD18plus-keith.txt"
+//        private val TESTFILE = "/Users/keith/Downloads/UKACD17/sorted/UKACD18plus-keith.txt"
+        private val TESTFILE = "/UKACD18plus-keith.txt"
 
         lateinit var solver: Solver
 
@@ -49,8 +51,7 @@ class SolverTest() {
         println(result.words.size)
         println(result.words)
 
-        //assertEquals(1, result.words.size)
-        //assertEquals("ampersand", result.words.first())
+        assertTrue(result.words.contains("shellfish"))
     }
 
     @Test
@@ -61,10 +62,14 @@ class SolverTest() {
 
         val result = solver.solve(clue)
 
+        assertTrue(result.words.contains("pot-pourri"))
         println(result.words.size)
         println(result.words)
     }
 
+    // currently fails to solve the clue
+    // - needs partial combo match, which is problematic
+    @Ignore
     @Test
     fun solveAnother3() {
         // NB NEVER COMPLETES without letters
@@ -74,6 +79,7 @@ class SolverTest() {
 
         val result = solver.solve(clue)
 
+        assertTrue(result.words.contains("rarebit"))
         println(result.words.size)
         println(result.words)
     }
@@ -87,6 +93,7 @@ class SolverTest() {
 
         val result = solver.solve(clue)
 
+        assertTrue(result.words.contains("transom"))
         println(result.words.size)
         println(result.words)
     }
@@ -99,6 +106,7 @@ class SolverTest() {
 
         val result = solver.solve(clue)
 
+        assertTrue(result.words.contains("brutish"))
         println(result.words.size)
         println(result.words)
     }
@@ -138,6 +146,7 @@ class SolverTest() {
         val clue = ClueParser.parseClue("... and Pan's Dream, perhaps (9)")
         val possibles = solver.tryFullAnagram(clue)
         println(possibles)
+        assertTrue(possibles.contains("ampersand"))
     }
 
     @Test
@@ -165,6 +174,7 @@ class SolverTest() {
         possibles.forEach {
             println("$it: ${it.javaClass.name}")
         }
+        assertTrue(possibles.contains("mead")) // me - ad
     }
 
     @Test
@@ -172,7 +182,7 @@ class SolverTest() {
       val clue = ClueParser.parseClue("Sort of house in Cheam, its deed is mislaid (4-8)")
       val possibles = solver.trySimplisticWNMatch(clue, false)
       possibles.forEach {
-        println("$it: ${it.javaClass.name}")
+        println(it)
       }
     }
 
@@ -202,8 +212,8 @@ class SolverTest() {
 
     @Test
     fun matchKnownLetters() {
-        val known = Array<Char?>(4, { _ -> null})
-        known[1] = 'e'
+        val known = Array<Char?>(4) { _ -> null}
+      known[1] = 'e'
         known[3] = 'd'
 
         assertTrue(matchKnownLetters("mead", known))
@@ -212,8 +222,8 @@ class SolverTest() {
 
     @Test
     fun matchKnownLetters2() {
-        val known = Array<Char?>(7, { _ -> null })
-        known[0] = 'h'
+        val known = Array<Char?>(7) { _ -> null }
+      known[0] = 'h'
         known[1] = null
         known[2] = null
         known[3] = null
@@ -226,8 +236,8 @@ class SolverTest() {
 
     @Test
     fun matchKnownLetters3() {
-        val known = Array<Char?>(12, { _ -> null})
-        known[0] = 's'
+        val known = Array<Char?>(12) { _ -> null}
+      known[0] = 's'
         known[5] = 'e'
 
         assertTrue(matchKnownLetters("semi-detached", known))
@@ -236,7 +246,7 @@ class SolverTest() {
 
     @Test
     fun knownLettersFilter() {
-      val known = Array<Char?>(12, { _ -> null})
+      val known = Array<Char?>(12) { _ -> null}
       known[0] = 's'
       known[5] = 'e'
 

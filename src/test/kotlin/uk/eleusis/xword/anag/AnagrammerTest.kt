@@ -9,7 +9,7 @@ class AnagrammerTest {
 
     companion object {
 
-        private val TESTFILE = "/Users/keith/Downloads/UKACD17/sorted/UKACD18plus-keith.txt"
+        private val TESTFILE = "/UKACD18plus-keith.txt"
 
         lateinit var anagrammer: Anagrammer
 
