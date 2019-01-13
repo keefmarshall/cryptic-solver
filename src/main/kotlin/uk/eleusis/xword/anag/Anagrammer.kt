@@ -16,6 +16,18 @@ class Anagrammer(val wf: WordFile) {
         return anagramMap.get(sanitisePhrase(phrase).toSortedBag())
     }
 
+    // Find words of the same size or smaller that can be made from the letters
+    // in the supplied word
+    fun findSub(word: String, minLength: Int = 0): Set<String> {
+      val sanbag = sanitisePhrase(word).toBag()
+
+      return anagramMap.keySet()
+        .filter { sanbag.containsAll(it) }
+        .flatMap { anagramMap.get(it) }
+        .filter { it.length >= minLength }
+        .toSortedSet()
+    }
+
     // Find words of the same size or larger that contain the letters from
     // the supplied partial inside - e.g. if I passed in 'ring' I'd get 'string'
     // in the output (and lots of other stuff!)

@@ -24,6 +24,18 @@ class AnagrammerTest {
     }
 
     @Test
+    fun findSub() {
+      time( "find sub") {
+        val allMatches = anagrammer.findSub("bizarre", 4)
+        assertEquals(35, allMatches.size)
+        assertTrue(allMatches.contains("zebra"))
+        allMatches.forEach(::println)
+      }
+
+      anagrammer.findSub("snebmaa", 4).forEach(::println)
+    }
+
+    @Test
     fun findPartial() {
 
         time("Find partials") {
