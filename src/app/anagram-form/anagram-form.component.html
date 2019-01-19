@@ -13,6 +13,16 @@
       />
       <button type="submit" (click)="findAnagrams()">Find Anagrams</button>
       <button (click)="clear()">Clear</button>
+
+      <div id="anagram-input-sub">
+        <label for="anagram-sub">Find partial words: </label>
+        <input type="checkbox"
+               id="anagram-sub"
+               name="anagram-sub"
+               [(ngModel)]="anagramSub"
+        />
+      </div>
+
     </div>
   </fieldset>
 </form>

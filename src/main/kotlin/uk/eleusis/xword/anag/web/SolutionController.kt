@@ -35,6 +35,13 @@ class SolutionController(
     @RequestMapping("/parse")
     fun parseClue(@RequestParam("clue") clue: String) = ClueParser.parseClue(clue)
 
+
+    @RequestMapping("/anagramsub")
+    fun anagramsub(@RequestParam(value = "phrase") phrase: String,
+                   @RequestParam(value = "minLength", required = false) minLength: Int?): Set<String> {
+      return anag.findSub(phrase, minLength ?: 0)
+    }
+
     @RequestMapping("/anagrams")
     fun anagrams(@RequestParam("phrase") phrase: String) = anag.findAnagrams(phrase)
 
